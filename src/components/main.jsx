@@ -30,6 +30,7 @@ import GeneratePage from './Id_Generator';
 import ResidentList from './EventList';
 import AddResident from './AddEvents';
 import RequestLogs from './Requested_Certificate_logs';
+import IDcontent from './IdContent';
 import AdminControl from './admin';
 import NotAuthorized from './NotAuthorized';
 
@@ -58,6 +59,7 @@ const NAVIGATION = [
   },
   { segment: 'residents', title: 'Events Management', icon: <EventIcon   /> },
   { segment: 'add-resident', title: 'Events Type Editor', icon: <EditCalendarIcon /> },
+  { segment: 'id-content', title: 'ID Content Editor', icon: <ManageAccountsIcon /> },
   {
     kind: 'divider',
   },
@@ -124,6 +126,8 @@ function DemoPageContent({ pathname }) {
       return <ResidentList />;
     case '/logs':
       return <RequestLogs />;
+    case '/id-content':
+      return <IDcontent />;
     default:
       return <Home />;
   }
@@ -200,7 +204,7 @@ function CustomAppTitle() {
   return (
     <Stack direction="row" alignItems="center" spacing={2}>
       <CloudCircleIcon fontSize="large" color="primary" />
-      <Typography variant="h6">RAEL ADMIN</Typography>
+      <Typography variant="h6">Event Management Admin</Typography>
     </Stack>
   );
 }

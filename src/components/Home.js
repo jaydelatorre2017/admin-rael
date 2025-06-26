@@ -12,7 +12,7 @@ import {
   Alert,
 } from '@mui/material';
 import { BarChart } from '@mui/x-charts/BarChart';
-
+import { API_URL,headername,keypoint } from '../utils/config';
 export default function FilterableParticipantsChart() {
   const [data, setData] = useState([]);
   const [filteredData, setFilteredData] = useState([]);
@@ -23,7 +23,7 @@ export default function FilterableParticipantsChart() {
 
   // Fetch data on mount
   useEffect(() => {
-    fetch('http://localhost:3000/api/registration/get_division_count')
+    fetch(`${API_URL}/api/registration/get_division_count`)
       .then((res) => res.json())
       .then((resData) => {
         setData(resData);

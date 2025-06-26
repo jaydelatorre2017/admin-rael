@@ -70,7 +70,7 @@ const EventList = () => {
     }).then(async (result) => {
       if (result.isConfirmed) {
         try {
-          await axios.delete(`http://localhost:3000/api/events/delete_event/${id}`);
+          await axios.delete(`${API_URL}/api/events/delete_event/${id}`);
           fetchEvents();
           SwalInstance.fire("Deleted!", "The event has been removed.", "success");
         } catch (error) {
@@ -98,56 +98,79 @@ const EventList = () => {
 
   const columns = [
     { field: 'id', headerName: 'ID', width: 80 },
-    { field: 'name', headerName: 'Name', width: 180 },
-    { field: 'host', headerName: 'Host', width: 150, renderCell: (params) => (
-        <div
-          style={{
-            whiteSpace: 'normal',      // allow wrapping
-            wordBreak: 'break-word',   // break long words
-            lineHeight: 1.4,           // optional spacing
-            padding: '4px 0',          // optional spacing
-          }}
-        >
+    { field: 'name', headerName: 'Name', width: 180,renderCell: (params) => (
+        <div style={{ whiteSpace: 'normal', wordBreak: 'break-word', lineHeight: 1.5, padding: '4px 0', textAlign: 'center', width: '100%' }}>
           {params.value}
         </div>
       ), },
-    { field: 'description', headerName: 'Description', width: 200,
-       renderCell: (params) => (
-        <div
-          style={{
-            whiteSpace: 'normal',      // allow wrapping
-            wordBreak: 'break-word',   // break long words
-            lineHeight: 1.4,           // optional spacing
-            padding: '4px 0',          // optional spacing
-          }}
-        >
+    { field: 'host', headerName: 'Host', width: 150, renderCell: (params) => (
+        <div style={{ whiteSpace: 'normal', wordBreak: 'break-word', lineHeight: 1.5,   padding: '4px 0', textAlign: 'center', width: '100%' }}>
           {params.value}
         </div>
       ),
-     },
-    { field: 'start_date', headerName: 'Start Date', width: 130 },
-    { field: 'end_date', headerName: 'End Date', width: 130 },
-    { field: 'event_type', headerName: 'Event Type', width: 160 },
-    {
-      field: 'actions',
-      headerName: 'Actions',
-      width: 110,
-      sortable: false,
-      renderCell: (params) => (
-        <Stack direction="row" spacing={1}>
-          <Tooltip title="Delete">
-            <IconButton color="error" onClick={() => deleteEvent(params.row.id)} size="small">
-              <DeleteIcon fontSize="small" />
-            </IconButton>
-          </Tooltip>
-          <Tooltip title="Edit">
-            <IconButton color="primary" onClick={() => handleEdit(params.row)} size="small">
-              <EditIcon fontSize="small" />
-            </IconButton>
-          </Tooltip>
-        </Stack>
+    },
+    { field: 'description', headerName: 'Description', width: 200, renderCell: (params) => (
+        <div style={{ whiteSpace: 'normal', wordBreak: 'break-word', lineHeight: 1.5, padding: '4px 0', textAlign: 'center', width: '100%' }}>
+          {params.value}
+        </div>
       ),
     },
+    { field: 'start_date', headerName: 'Start Date', width: 130, align: 'center', headerAlign: 'center' },
+    { field: 'end_date', headerName: 'End Date', width: 130, align: 'center', headerAlign: 'center' },
+    { field: 'event_type', headerName: 'Event Type', width: 160, align: 'center', headerAlign: 'center' }, // category from events_types
+    { field: 'division', headerName: 'Division', width: 120, align: 'center', headerAlign: 'center' },
+    { field: 'venue', headerName: 'Venue', width: 120, align: 'center', headerAlign: 'center' },
+    { field: 'required_reciept', headerName: 'Receipt Required', width: 140, align: 'center', headerAlign: 'center', renderCell: (params) => (
+        <div style={{ width: '100%', textAlign: 'center' }}>
+          {params.value ? "Yes" : "No"}
+        </div>
+      ),
+    },
+    { field: 'id_content_title', headerName: 'Content Title', width: 180, align: 'center', headerAlign: 'center' },
+    { field: 'active', headerName: 'Active', width: 100, align: 'center', headerAlign: 'center', renderCell: (params) => (
+        <div style={{ width: '100%', textAlign: 'center' }}>
+          {params.value ? "Active" : "Inactive"}
+        </div>
+      ),
+    },
+   {
+  field: 'actions',
+  headerName: 'Actions',
+  align: 'center',
+  headerAlign: 'center',
+  sortable: false,
+  renderCell: (params) => (
+    <Box
+      sx={{
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        marginTop: '10px',
+        width: '100%',
+      }}
+    >
+      <Tooltip title="Delete">
+        <IconButton
+          color="error"
+          onClick={() => deleteEvent(params.row.id)}
+          size="small"
+        >
+          <DeleteIcon fontSize="small" />
+        </IconButton>
+      </Tooltip>
+      <Tooltip title="Edit">
+        <IconButton
+          color="primary"
+          onClick={() => handleEdit(params.row)}
+          size="small"
+        >
+          <EditIcon fontSize="small" />
+        </IconButton>
+      </Tooltip>
+    </Box>
+  ),
+},
+
   ];
 
   const CustomNoRowsOverlay = () => (
@@ -207,6 +230,7 @@ const EventList = () => {
             columns={columns}
             pageSize={7}
             rowsPerPageOptions={[7]}
+            columnVisibilityModel={{ id: false }}
             getRowId={(row) => row.id}
             slots={{
               noRowsOverlay: CustomNoRowsOverlay,

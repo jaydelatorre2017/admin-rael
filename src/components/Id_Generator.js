@@ -10,177 +10,189 @@ import FormControl from '@mui/material/FormControl';
 import InputLabel from '@mui/material/InputLabel';
 import useSwalTheme from '../utils/useSwalTheme';
 import { API_URL,headername,keypoint } from '../utils/config';
+
+const ID_CARD_WIDTH = 378;   // 10cm ≈ 378px at 96dpi
+const ID_CARD_HEIGHT = 454;  // 12cm ≈ 454px at 96dpi
+
+
 const IDCard = ({ participant }) => {
+  const bgUrl = participant.left_logo_url|| "cam-norte.png";
+  const shape1 = participant.participant_type === 'Participant' ? 'Shape 1 (4).svg' : 'Shape 1 (5).svg';
+  const shape2 = participant.participant_type === 'Participant' ? 'Shape 2 (3).svg' : 'Shape 2 (4).svg';
   return (
+   <div
+  style={{
+    width: ID_CARD_WIDTH,
+    height: ID_CARD_HEIGHT,
+    position: 'relative',
+    overflow: 'hidden',
+    borderRadius: 8,
+    margin: 8,
+  }}
+>
+  {/* Background overlay */}
+  <div
+    style={{
+      position: 'absolute',
+      top: 40,
+      left: 0,
+      width: '100%',
+      height: '100%',
+        backgroundImage: `url(${bgUrl})`,
+      backgroundSize: 'cover',
+      backgroundPosition: 'center',
+      opacity: 0.3, // background image opacity
+      zIndex: 0,
+    }}
+  />
+
+  {/* All your other content stays above */}
+  <img
+    style={{ position: 'absolute', top: -40, left: 0, width: ID_CARD_WIDTH, height: (196 * (ID_CARD_WIDTH / 322)), zIndex: 1 }}
+    src= {shape1}
+    alt=""
+  />
+  <img
+    style={{ position: 'absolute', top: ID_CARD_HEIGHT - 140, left: 0, width: ID_CARD_WIDTH , height: 196, zIndex: 1 }}
+    src={shape2}
+    alt=""
+  />
+
+  <img
+    style={{
+      position: 'absolute',
+      top: 200,
+      left: (ID_CARD_WIDTH - 260) / 2,
+      width: 120,
+      height: 120,
+      border: '1px solid #302ea6',
+      background: '#fff',
+      objectFit: 'cover',
+      zIndex: 1,
+    }}
+    src={participant.participant_image_url || 'https://imgs.search.brave.com/RlLMklCzxIKu5cSUG_cy9tOqGWIRRRrrmSkrrS2cljM/rs:fit:500:0:0:0/g:ce/aHR0cHM6Ly9tYXJr/ZXRwbGFjZS5jYW52/YS5jb20vZ0pseTAv/TUFHRGtNZ0pseTAv/MS90bC9jYW52YS11/c2VyLXByb2ZpbGUt/aWNvbi12ZWN0b3Iu/LWF2YXRhci1vci1w/ZXJzb24taWNvbi4t/cHJvZmlsZS1waWN0/dXJlLC1wb3J0cmFp/dC1zeW1ib2wuLU1B/R0RrTWdKbHkwLnBu/Zw'}
+    alt=""
+  />
+
+  {/* QR Code section */}
+  <div
+    style={{
+      position: 'absolute',
+      top: 200,
+      right: (ID_CARD_WIDTH - 360) / 2,
+      transform: 'translateX(-50%)',
+      width: 120,
+      height: 120,
+      background: '#fff',
+      border: '1px solid #302ea6',
+      zIndex: 1,
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+    }}
+  >
+    <QRCodeSVG
+      value={participant.id ? String(participant.id) : 'No ID'}
+      size={100}
+      level="H"
+      includeMargin={false}
+    />
     <div
       style={{
-        width: 204,
-        height: 323,
-        position: 'relative',
-        background: 'linear-gradient(to bottom, #ffffff 0%, #910500 100%)',
-        overflow: 'hidden',
-        borderRadius: 8,
-        margin: 8,
+        position: 'absolute',
+        width: 60,
+        height: 60,
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
       }}
     >
-      <img
-        style={{ position: 'absolute', top: 0, left: 0, width: 204, height: 120.2 }}
-        src="Shape 1.svg"
-        alt=""
-      />
-      <img
-        style={{ position: 'absolute', top: 268, left: 0, width: 204, height: 54 }}
-        src="Shape 2.svg"
-        alt=""
-      />
-      <img
-        style={{
-          position: 'absolute',
-          top: 75,
-          left: 62,
-          width: 80,
-          height: 80,
-          borderRadius: '50%',
-          border: '3px solid #302ea6',
-          background: '#fff',
+      <img src="/qrlogo.png" alt="QR Logo" style={{ width: 28, height: 28 }} />
+    </div>
+  </div>
 
-          objectFit: 'cover',
-        }}
-        src={participant.participant_image_url || 'https://imgs.search.brave.com/RlLMklCzxIKu5cSUG_cy9tOqGWIRRRrrmSkrrS2cljM/rs:fit:500:0:0:0/g:ce/aHR0cHM6Ly9tYXJr/ZXRwbGFjZS5jYW52/YS5jb20vZ0pseTAv/TUFHRGtNZ0pseTAv/MS90bC9jYW52YS11/c2VyLXByb2ZpbGUt/aWNvbi12ZWN0b3Iu/LWF2YXRhci1vci1w/ZXJzb24taWNvbi4t/cHJvZmlsZS1waWN0/dXJlLC1wb3J0cmFp/dC1zeW1ib2wuLU1B/R0RrTWdKbHkwLnBu/Zw'}
-        alt=""
-      />
+  {/* Logos */}
+  <img
+    style={{ position: 'absolute', top: 18, left: 18, width: 80, zIndex: 1 }}
+    src={participant.left_logo_url || "LeftLogo.png"}
+    alt="Left Logo"
+  />
+  <img
+    style={{ position: 'absolute', top: 18, right: 18, width: 80, zIndex: 1 }}
+    src={participant.right_logo_url || "RightLogo.png"}
+    alt="Right Logo"
+  />
+
+  {/* Participant name */}
+  <div
+    style={{
+      position: 'absolute',
+      top: 350,
+      width: '100%',
+      textAlign: 'center',
+      zIndex: 1,
+    }}
+  >
+    <b
+      style={{
+        background: 'linear-gradient(0deg, #000000 12.29%, #000f30 77.92%)',
+        WebkitBackgroundClip: 'text',
+        WebkitTextFillColor: 'transparent',
+        fontWeight: 'bold',
+        fontSize: 28,
+      }}
+    >
+      {participant.name?.toUpperCase()}
+    </b>
+  </div>
+
+  {/* Header text */}
+  <div
+    style={{
+      position: 'absolute',
+      top: 30,
+      left: 60,
+      width: ID_CARD_WIDTH - 120,
+      fontSize: 13,
+      fontFamily: "'Roboto', sans-serif",
+      zIndex: 1,
+    }}
+  >
+    
+    <div style={{ position: 'absolute', top: 20, width: '100%', textAlign: 'center' }}>
       <div
         style={{
           position: 'absolute',
-          top: 204,
+          top: 15,
           left: '50%',
           transform: 'translateX(-50%)',
-          width: 80,
-          height: 70,
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          background: '#fff',
-          position: 'relative',
+          fontFamily: "'Kameron', serif",
+          fontWeight: 'bold',
+          color: '#000',
+          fontSize: 18,
         }}
       >
-        <QRCodeSVG
-          value={participant.id ? String(participant.id) : 'No ID'}
-          size={64}
-          level="H" // High error correction for embedded logo
-          includeMargin={false}
-        />
-        <div
-          style={{
-            position: 'absolute',
-            width: 50, // Make the logo slightly bigger
-            height: 50,
-
-
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-
-          }}
-        >
-          <img
-            src="/qrlogo.png" // Replace with your logo path
-            alt="QR Logo"
-            style={{
-              width: 24,
-              height: 24,
-
-            }}
-          />
-        </div>
+      {participant.title?.toUpperCase()}
       </div>
-
-      <img
-        style={{ position: 'absolute', top: 10, left: 10, width: 40 }}
-        src="LeftLogo.png"
-        alt="Left Logo"
-      />
-      <img
-        style={{ position: 'absolute', top: 10, right: 10, width: 40 }}
-        src="RightLogo.png"
-        alt="Right Logo"
-      />
-
       <div
         style={{
           position: 'absolute',
-          top: 170,
-          width: '100%',
+          top: 50,
+          color: '#000',
+          fontFamily: "'Kameron', serif",
           textAlign: 'center',
+          width: '100%',
+
+          fontSize: 14,
+          fontStyle: 'italic',
         }}
       >
-        <b
-          style={{
-            background: 'linear-gradient(0deg, #000000 12.29%, #000f30 77.92%)',
-            WebkitBackgroundClip: 'text',
-            WebkitTextFillColor: 'transparent',
-            fontWeight: 'bold',
-            fontSize: 14,
-            width: '100%',
-          }}
-        >
-          {participant.name.toUpperCase()}
-        </b>
-      </div>
-
-      <div
-        style={{
-          position: 'absolute',
-          top: 20,
-          left: 33,
-          width: 153,
-          fontSize: 8,
-          fontFamily: "'Roboto', sans-serif",
-        }}
-      >
-        <img
-          style={{ position: 'absolute', top: 0, left: 54, width: 40 }}
-          src="qrlogo.png"
-          alt=""
-        />
-        <div
-          style={{
-            position: 'absolute',
-            top: 10,
-            width: '100%',
-            textAlign: 'center',
-          }}
-        >
-
-          <div
-            style={{
-              position: 'absolute',
-              top: 10,
-              left: '45%',
-              transform: 'translateX(-50%)',
-              fontFamily: "'Kameron', serif",
-              fontWeight: 'bold',
-              color: '#000',
-              fontSize: 12,
-            }}
-          >
-            RAEL
-          </div>
-          <div
-            style={{
-              position: 'absolute',
-              top: 30,
-              color: '#000',
-              fontFamily: "'Kameron', serif",
-              textAlign: 'center',
-            }}
-          >
-            Regional Assembly of Education Leaders
-          </div>
-
-        </div>
+      {participant.subtitle}
       </div>
     </div>
+  </div>
+</div>
+
   );
 };
 
@@ -193,7 +205,7 @@ const ParticipantIDGenerator = () => {
   const [page, setPage] = useState(0);
   const gridRef = useRef();
   const SwalInstance = useSwalTheme();
-  const columns = 5;
+  const columns = 2;
   const rows = 2;
   const idsPerPage = columns * rows;
 
@@ -208,7 +220,7 @@ const ParticipantIDGenerator = () => {
         },
       });
       try {
-        const response = await fetch(`${API_URL}/api/registration/get`);
+        const response = await fetch(`${API_URL}/api/registration/get_data_id`);
         const data = await response.json();
         setParticipants(data);
         SwalInstance.close();
@@ -398,7 +410,7 @@ const ParticipantIDGenerator = () => {
           display: 'flex',
           justifyContent: 'center',
           alignItems: 'center',
-          minHeight: `${rows * 340}px`,
+          minHeight: `${rows * (ID_CARD_HEIGHT + 20)}px`,
         }}
       >
         {paginated.length === 0 ? (
@@ -409,11 +421,11 @@ const ParticipantIDGenerator = () => {
           <Grid
             ref={gridRef}
             columnCount={columns}
-            columnWidth={220}
-            height={rows * 340}
+            columnWidth={ID_CARD_WIDTH + 20}
+            height={rows * (ID_CARD_HEIGHT + 20)}
             rowCount={rows}
-            rowHeight={340}
-            width={columns * 220 + 20}
+            rowHeight={ID_CARD_HEIGHT + 20}
+            width={columns * (ID_CARD_WIDTH + 20) + 20}
             itemData={paginated}
           >
             {({ columnIndex, rowIndex, style, data }) => {
@@ -441,6 +453,9 @@ const ParticipantIDGenerator = () => {
         width: 100vw;
         height: auto !important;
         overflow: visible !important; /* ensure all content is shown */
+          .your-id-card-class {
+    background: #fff !important;
+  }
       }
       input, button { display: none !important; }
       * {

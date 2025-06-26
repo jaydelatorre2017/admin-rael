@@ -114,7 +114,7 @@ const RegistrationTable = () => {
       setLoading(true);
       try {
         // Adjust API endpoint as needed
-        const res = await fetch('http://localhost:3000/api/registration/delete-all', { method: 'DELETE' });
+        const res = await fetch(`${API_URL}/api/registration/delete_all`, { method: 'DELETE' });
         if (res.ok) {
           setRegistrations([]);
           setFilteredRegistrations([]);
