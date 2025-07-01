@@ -16,7 +16,7 @@ const ID_CARD_HEIGHT = 454;  // 12cm ≈ 454px at 96dpi
 
 
 const IDCard = ({ participant }) => {
-  const bgUrl = participant.left_logo_url|| "cam-norte.png";
+  const bgUrl = participant.right_logo_url|| "cam-norte.png";
   const shape1 = participant.participant_type === 'Participant' ? 'Shape 1 (4).svg' : 'Shape 1 (5).svg';
   const shape2 = participant.participant_type === 'Participant' ? 'Shape 2 (3).svg' : 'Shape 2 (4).svg';
   return (
@@ -70,7 +70,7 @@ const IDCard = ({ participant }) => {
       objectFit: 'cover',
       zIndex: 1,
     }}
-    src={participant.participant_image_url || 'https://imgs.search.brave.com/RlLMklCzxIKu5cSUG_cy9tOqGWIRRRrrmSkrrS2cljM/rs:fit:500:0:0:0/g:ce/aHR0cHM6Ly9tYXJr/ZXRwbGFjZS5jYW52/YS5jb20vZ0pseTAv/TUFHRGtNZ0pseTAv/MS90bC9jYW52YS11/c2VyLXByb2ZpbGUt/aWNvbi12ZWN0b3Iu/LWF2YXRhci1vci1w/ZXJzb24taWNvbi4t/cHJvZmlsZS1waWN0/dXJlLC1wb3J0cmFp/dC1zeW1ib2wuLU1B/R0RrTWdKbHkwLnBu/Zw'}
+    src={participant.participant_image_url || 'user.png'}
     alt=""
   />
 
@@ -113,12 +113,12 @@ const IDCard = ({ participant }) => {
 
   {/* Logos */}
   <img
-    style={{ position: 'absolute', top: 18, left: 18, width: 80, zIndex: 1 }}
+    style={{ position: 'absolute', top: 18, left: 18, width: 65, zIndex: 1 }}
     src={participant.left_logo_url || "LeftLogo.png"}
     alt="Left Logo"
   />
   <img
-    style={{ position: 'absolute', top: 18, right: 18, width: 80, zIndex: 1 }}
+    style={{ position: 'absolute', top: 18, right: 18, width: 65, zIndex: 1 }}
     src={participant.right_logo_url || "RightLogo.png"}
     alt="Right Logo"
   />
@@ -164,12 +164,11 @@ const IDCard = ({ participant }) => {
         style={{
           position: 'absolute',
           top: 15,
-          left: '50%',
-          transform: 'translateX(-50%)',
+      
+            width: '100%',
           fontFamily: "'Kameron', serif",
-          fontWeight: 'bold',
           color: '#000',
-          fontSize: 18,
+          fontSize: 12,
         }}
       >
       {participant.title?.toUpperCase()}
@@ -177,17 +176,19 @@ const IDCard = ({ participant }) => {
       <div
         style={{
           position: 'absolute',
-          top: 50,
+          top: 45,
           color: '#000',
           fontFamily: "'Kameron', serif",
           textAlign: 'center',
           width: '100%',
-
-          fontSize: 14,
-          fontStyle: 'italic',
+          fontWeight: 'bold',
+          fontSize: 16,
+       
         }}
       >
-      {participant.subtitle}
+   <strong>{participant.subtitle}</strong><br />
+<span>July 1, 2025</span>
+
       </div>
     </div>
   </div>
