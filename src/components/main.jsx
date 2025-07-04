@@ -1,72 +1,75 @@
+// React and Router
+import { useNavigate, Navigate } from 'react-router-dom';
 
-
-
+// MUI Components
 import PropTypes from 'prop-types';
 import IconButton from '@mui/material/IconButton';
 import Stack from '@mui/material/Stack';
-import { useNavigate, Navigate } from 'react-router-dom';
 import Tooltip from '@mui/material/Tooltip';
 import Typography from '@mui/material/Typography';
 import { createTheme } from '@mui/material/styles';
-import CloudCircleIcon from '@mui/icons-material/CloudCircle';
+
+// MUI Icons
 import DashboardIcon from '@mui/icons-material/Dashboard';
 import EventIcon from '@mui/icons-material/Event';
-import { isTokenValid, decodeToken } from "../utils/tokenUtils"; // import utility
-import EditCalendarIcon from '@mui/icons-material/EditCalendar';
-
 import ManageHistoryIcon from '@mui/icons-material/ManageHistory';
 import PowerSettingsNewIcon from '@mui/icons-material/PowerSettingsNew';
-import DocumentScannerIcon from '@mui/icons-material/DocumentScanner';
 import AdminPanelSettingsIcon from '@mui/icons-material/AdminPanelSettings';
-import useSwalTheme from '../utils/useSwalTheme';
+
+import GroupIcon from '@mui/icons-material/Group';
+import BadgeIcon from '@mui/icons-material/Badge';
+import AssignmentIndIcon from '@mui/icons-material/AssignmentInd';
+import ListAltIcon from '@mui/icons-material/ListAlt';
+import AddBoxIcon from '@mui/icons-material/AddBox';
+import CloudCircleIcon from '@mui/icons-material/CloudCircle';
+
+// Toolpad Core
 import { AppProvider } from '@toolpad/core/AppProvider';
 import { DashboardLayout, ThemeSwitcher } from '@toolpad/core/DashboardLayout';
 import { useDemoRouter } from '@toolpad/core/internal';
-import ManageAccountsIcon from '@mui/icons-material/ManageAccounts';
-// Import Pages
+
+// Utilities
+import useSwalTheme from '../utils/useSwalTheme';
+import { isTokenValid, decodeToken } from "../utils/tokenUtils";
+
+// Pages
 import Home from './Home';
 import RequestPage from './Registered_Participants';
 import GeneratePage from './Id_Generator';
 import ResidentList from './EventList';
 import AddResident from './AddEvents';
 import RequestLogs from './Requested_Certificate_logs';
-import IDcontent from './IdContent';
 import AdminControl from './admin';
 import NotAuthorized from './NotAuthorized';
 
-
-
-
-
+// Others
+import { header } from 'framer-motion/client';
 
 
 const NAVIGATION = [
-  { kind: 'header', title: 'Main items' },
+  { kind: 'header', title: 'Main items', icon: <DashboardIcon /> },
   { segment: '', title: 'Dashboard', icon: <DashboardIcon /> },
+
+  { kind: 'divider' },
+
+  { kind: 'header', title: 'Participants', icon: <GroupIcon /> },
+  { segment: 'request', title: 'Registered Participants', icon: <BadgeIcon /> },
+
+  { kind: 'divider', header: 'Events & Id Management', icon: <EventIcon /> },
+
   {
-    kind: 'divider',
+    segment: 'events', title: 'Events Management', icon: <EventIcon />, children: [
+      { segment: 'list', title: 'Events List', icon: <ListAltIcon /> },
+      { segment: 'editor', title: 'Add Events', icon: <AddBoxIcon /> },
+    ]
   },
-  {
-    kind: 'header',
-    title: 'Participants',
-  },
-  { segment: 'request', title: 'Registered Participants', icon: <ManageAccountsIcon /> },
-  {
-    segment: 'generate', title: 'Generate Participants ID', icon: <DocumentScannerIcon />,
-  },
-  {
-    kind: 'divider',
-  },
-  { segment: 'residents', title: 'Events Management', icon: <EventIcon   /> },
-  { segment: 'add-resident', title: 'Events Type Editor', icon: <EditCalendarIcon /> },
-  { segment: 'id-content', title: 'ID Content Editor', icon: <ManageAccountsIcon /> },
-  {
-    kind: 'divider',
-  },
-  { segment: 'logs', title: 'Attendace Logs', icon: <ManageHistoryIcon /> },
-  {
-    kind: 'divider',
-  },
+
+  { kind: 'divider' },
+
+  { segment: 'logs', title: 'Attendance Logs', icon: <ManageHistoryIcon /> },
+
+  { kind: 'divider' },
+
   { segment: 'admin', title: 'Admin Control', icon: <AdminPanelSettingsIcon /> },
 ];
 
@@ -85,7 +88,7 @@ const demoTheme = createTheme({
     },
   },
 });
- 
+
 function DemoPageContent({ pathname }) {
   const token = localStorage.getItem("authToken");
   const isValid = token && isTokenValid(token);
@@ -106,14 +109,7 @@ function DemoPageContent({ pathname }) {
       return <NotAuthorized />;
     }
   }
-  if (pathname === '/add-resident') {
-    if (bulk_ops === true) {
-      return <AddResident />;
-    } else {
 
-      return <NotAuthorized />;
-    }
-  }
 
   switch (pathname) {
     case '/':
@@ -122,12 +118,12 @@ function DemoPageContent({ pathname }) {
       return <RequestPage />;
     case '/generate':
       return <GeneratePage />;
-    case '/residents':
+    case '/events/list':
       return <ResidentList />;
     case '/logs':
       return <RequestLogs />;
-    case '/id-content':
-      return <IDcontent />;
+    case '/events/editor':
+      return <AddResident />;
     default:
       return <Home />;
   }
@@ -142,8 +138,8 @@ function ToolbarActionsSearch() {
   const SwalInstance = useSwalTheme();
   // Initialize navigate function for routing
   const navigate = useNavigate();
- 
- 
+
+
 
   // Handle sign-out action
   const handleSignOut = () => {
@@ -173,10 +169,10 @@ function ToolbarActionsSearch() {
     });
   };
 
-  
 
 
-  
+
+
   // Render toolbar actions
   return (
     <Stack direction="row" alignItems="center" spacing={1}>
@@ -191,9 +187,9 @@ function ToolbarActionsSearch() {
         </div>
       </Tooltip>
 
-      
 
-    
+
+
       <ThemeSwitcher />
     </Stack>
   );

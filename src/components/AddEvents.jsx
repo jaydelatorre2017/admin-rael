@@ -30,40 +30,18 @@ const CreateEvent = () => {
     event_description: "",
     event_start_date: "",
     event_end_date: "",
-    event_type: "",
-    id_content: "",
-    division: "",
     activate_event: false,
     required_receipt: false,
   });
 
-  const [eventTypes, setEventTypes] = useState([]);
-  const [idContent, setIdContent] = useState([]);
-  const [loadingEventTypes, setLoadingEventTypes] = useState(true);
   const [loading, setLoading] = useState(false);
   const [snackbar, setSnackbar] = useState({ open: false, message: "", severity: "success" });
 
   const SwalInstance = useSwalTheme();
 
-  useEffect(() => {
-    axios
-      .get(`${API_URL}/api/events/get_events_types`)
-      .then((res) => {
-        setEventTypes(res.data);
-        setLoadingEventTypes(false);
-      })
-      .catch(() => setLoadingEventTypes(false));
-  }, []);
 
-  useEffect(() => {
-    axios
-      .get(`${API_URL}/api/id_content/get`)
-      .then((res) => {
-        setIdContent(res.data);
-        setLoadingEventTypes(false);
-      })
-      .catch(() => setLoadingEventTypes(false));
-  }, []);
+
+
 
   const handleChange = (e) => {
     setEvent({ ...Event, [e.target.name]: e.target.value });
@@ -105,11 +83,8 @@ const CreateEvent = () => {
         description: Event.event_description,
         start_date: Event.event_start_date,
         end_date: Event.event_end_date,
-        events_types: Event.event_type,
-        id_content: Number(Event.id_content),
         active: Event.activate_event,
         required_reciept: Event.required_receipt,
-        division: Event.division !== "All" ? Event.division : Event.division,
         venue: Event.event_venue,
       };
 
@@ -127,7 +102,7 @@ const CreateEvent = () => {
   const handleCloseSnackbar = () => setSnackbar({ ...snackbar, open: false });
 
   return (
-    <Container maxWidth="md" sx={{ mt: 4 }}>
+    <Container maxWidth="lg" sx={{ mt: 4 }}>
       <Paper elevation={3} sx={{ p: 4 }}>
         <Typography variant="h4" gutterBottom>Create Event</Typography>
         <form onSubmit={handleSubmit}>
@@ -161,7 +136,7 @@ const CreateEvent = () => {
                 value={Event.event_description}
                 onChange={handleChange}
                 multiline
-                minRows={3}
+                minRows={2}
                 required
               />
             </Grid>
@@ -186,74 +161,6 @@ const CreateEvent = () => {
                   slotProps={{ textField: { fullWidth: true, required: true } }}
                 />
               </LocalizationProvider>
-            </Grid>
-
-            <Grid item xs={12} sm={6}>
-              <FormControl fullWidth required>
-                <InputLabel>Event Type</InputLabel>
-                <Select
-                  name="event_type"
-                  value={Event.event_type}
-                  onChange={handleChange}
-                  label="Event Type"
-                >
-                  {loadingEventTypes ? (
-                    <MenuItem disabled><em>Loading...</em></MenuItem>
-                  ) : (
-                    eventTypes.map((type) => (
-                      <MenuItem key={type.id} value={type.id}>{type.category}</MenuItem>
-                    ))
-                  )}
-                </Select>
-              </FormControl>
-            </Grid>
-
-            <Grid item xs={12} sm={6}>
-              <FormControl fullWidth required>
-                <InputLabel>Id Content</InputLabel>
-                <Select
-                  name="id_content"
-                  value={Event.id_content}
-                  onChange={handleChange}
-                  label="Id Content"
-                >
-                  {loadingEventTypes ? (
-                    <MenuItem disabled><em>Loading...</em></MenuItem>
-                  ) : (
-                    idContent.map((item) => (
-                      <MenuItem key={item.id} value={item.id}>{item.title}</MenuItem>
-                    ))
-                  )}
-                </Select>
-              </FormControl>
-            </Grid>
-
-            <Grid item xs={12} >
-              <FormControl fullWidth>
-                <InputLabel>Division</InputLabel>
-                <Select
-                  name="division"
-                  value={Event.division}
-                  onChange={handleChange}
-                  label="Division"
-                  displayEmpty
-                >
-                  <MenuItem value="All">All</MenuItem>
-                  <MenuItem value="Albay">Albay</MenuItem>
-                  <MenuItem value="Camarines Norte">Camarines Norte</MenuItem>
-                  <MenuItem value="Camarines Sur">Camarines Sur</MenuItem>
-                  <MenuItem value="Catanduanes">Catanduanes</MenuItem>
-                  <MenuItem value="Masbate">Masbate</MenuItem>
-                  <MenuItem value="Sorsogon">Sorsogon</MenuItem>
-                  <MenuItem value="Iriga City">Iriga City</MenuItem>
-                  <MenuItem value="Legaspi City">Legaspi City</MenuItem>
-                  <MenuItem value="Naga City">Naga City</MenuItem>
-                  <MenuItem value="Sorsogon City">Sorsogon City</MenuItem>
-                  <MenuItem value="Tabaco City">Tabaco City</MenuItem>
-                  <MenuItem value="Ligao City">Ligao City</MenuItem>
-                  <MenuItem value="Masbate City">Masbate City</MenuItem>
-                </Select>
-              </FormControl>
             </Grid>
 
             <Grid item xs={12} sm={6}>
@@ -294,7 +201,7 @@ const CreateEvent = () => {
                 value={Event.event_venue}
                 onChange={handleChange}
                 multiline
-                minRows={3}
+                minRows={2}
                 required
               />
             </Grid>

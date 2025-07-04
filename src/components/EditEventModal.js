@@ -20,32 +20,14 @@ const EditEventModal = ({ open, handleClose, event, fetchEvents }) => {
     event_description: "",
     event_start_date: "",
     event_end_date: "",
-    event_type: "",
-    id_content: "",
-    division: "",
     activate_event: false,
     required_receipt: false,
   };
 
   const [formValues, setFormValues] = useState(defaultEvent);
-  const [eventTypes, setEventTypes] = useState([]);
-  const [idContent, setIdContent] = useState([]);
-  const [loadingEventTypes, setLoadingEventTypes] = useState(true);
   const [loading, setLoading] = useState(false);
   const SwalInstance = useSwalTheme();
 
-  useEffect(() => {
-    // Fetch event types
-    axios.get(`${API_URL}/api/events/get_events_types`)
-      .then(res => {
-        setEventTypes(res.data);
-        setLoadingEventTypes(false);
-      })
-      .catch(() => setLoadingEventTypes(false));
-    axios.get(`${API_URL}/api/id_content/get`)
-      .then(res => setIdContent(res.data))
-      .catch(() => {});
-  }, []);
 
   useEffect(() => {
     if (event) {
@@ -126,11 +108,8 @@ const EditEventModal = ({ open, handleClose, event, fetchEvents }) => {
         description: formValues.event_description,
         start_date: formValues.event_start_date,
         end_date: formValues.event_end_date,
-        events_types: formValues.event_type,
-        id_content: Number(formValues.id_content),
         active: formValues.activate_event,
         required_reciept: formValues.required_receipt, // <-- fix key spelling
-        division: formValues.division !== "All" ? formValues.division : formValues.division,
         venue: formValues.event_venue,
       };
 
@@ -213,79 +192,6 @@ const EditEventModal = ({ open, handleClose, event, fetchEvents }) => {
                   slotProps={{ textField: { fullWidth: true, required: true } }}
                 />
               </LocalizationProvider>
-            </Grid>
-            <Grid item xs={12} sm={6}>
-              <FormControl fullWidth required>
-                <InputLabel>Event Type</InputLabel>
-                <Select
-                  name="event_type"
-                  value={formValues.event_type}
-                  onChange={handleChange}
-                  label="Event Type"
-                >
-                  {loadingEventTypes ? (
-                    <MenuItem value="">
-                      <em>Loading...</em>
-                    </MenuItem>
-                  ) : (
-                    eventTypes.map(type => (
-                      <MenuItem key={type.id} value={type.id}>
-                        {type.category}
-                      </MenuItem>
-                    ))
-                  )}
-                </Select>
-              </FormControl>
-            </Grid>
-            <Grid item xs={12} sm={6}>
-              <FormControl fullWidth required>
-                <InputLabel>Id Content</InputLabel>
-                <Select
-                  name="id_content"
-                  value={formValues.id_content}
-                  onChange={handleChange}
-                  label="Id Content"
-                >
-                  {loadingEventTypes ? (
-                    <MenuItem value="">
-                      <em>Loading...</em>
-                    </MenuItem>
-                  ) : (
-                    idContent.map(item => (
-                      <MenuItem key={item.id} value={item.id}>
-                        {item.title}
-                      </MenuItem>
-                    ))
-                  )}
-                </Select>
-              </FormControl>
-            </Grid>
-            <Grid item xs={12}>
-              <FormControl fullWidth>
-                <InputLabel>Division</InputLabel>
-                <Select
-                  name="division"
-                  value={formValues.division}
-                  onChange={handleChange}
-                  label="Division"
-                  displayEmpty
-                >
-                  <MenuItem value="All">All</MenuItem>
-                  <MenuItem value="Albay">Albay</MenuItem>
-                  <MenuItem value="Camarines Norte">Camarines Norte</MenuItem>
-                  <MenuItem value="Camarines Sur">Camarines Sur</MenuItem>
-                  <MenuItem value="Catanduanes">Catanduanes</MenuItem>
-                  <MenuItem value="Masbate">Masbate</MenuItem>
-                  <MenuItem value="Sorsogon">Sorsogon</MenuItem>
-                  <MenuItem value="Iriga City">Iriga City</MenuItem>
-                  <MenuItem value="Legaspi City">Legaspi City</MenuItem>
-                  <MenuItem value="Naga City">Naga City</MenuItem>
-                  <MenuItem value="Sorsogon City">Sorsogon City</MenuItem>
-                  <MenuItem value="Tabaco City">Tabaco City</MenuItem>
-                  <MenuItem value="Ligao City">Ligao City</MenuItem>
-                  <MenuItem value="Masbate City">Masbate City</MenuItem>
-                </Select>
-              </FormControl>
             </Grid>
             <Grid item xs={12} sm={6}>
               <FormControl fullWidth required>

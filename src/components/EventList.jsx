@@ -117,8 +117,6 @@ const EventList = () => {
     },
     { field: 'start_date', headerName: 'Start Date', width: 130, align: 'center', headerAlign: 'center' },
     { field: 'end_date', headerName: 'End Date', width: 130, align: 'center', headerAlign: 'center' },
-    { field: 'event_type', headerName: 'Event Type', width: 160, align: 'center', headerAlign: 'center' }, // category from events_types
-    { field: 'division', headerName: 'Division', width: 120, align: 'center', headerAlign: 'center' },
     { field: 'venue', headerName: 'Venue', width: 120, align: 'center', headerAlign: 'center' },
     { field: 'required_reciept', headerName: 'Receipt Required', width: 140, align: 'center', headerAlign: 'center', renderCell: (params) => (
         <div style={{ width: '100%', textAlign: 'center' }}>
@@ -126,7 +124,6 @@ const EventList = () => {
         </div>
       ),
     },
-    { field: 'id_content_title', headerName: 'Content Title', width: 180, align: 'center', headerAlign: 'center' },
     { field: 'active', headerName: 'Active', width: 100, align: 'center', headerAlign: 'center', renderCell: (params) => (
         <div style={{ width: '100%', textAlign: 'center' }}>
           {params.value ? "Active" : "Inactive"}
