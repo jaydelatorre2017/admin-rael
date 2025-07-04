@@ -15,36 +15,36 @@
 // const ID_CARD_HEIGHT = 454;  // 12cm ≈ 454px at 96dpi
 
 
-// const IDCard = ({ participant }) => {
-//   const bgUrl = participant.right_logo_url|| "cam-norte.png";
-//   const shape1 = participant.participant_type === 'Participant' ? 'Shape 1 (4).svg' : 'Shape 1 (5).svg';
-//   const shape2 = participant.participant_type === 'Participant' ? 'Shape 2 (3).svg' : 'Shape 2 (4).svg';
-//   return (
-//    <div
-//   style={{
-//     width: ID_CARD_WIDTH,
-//     height: ID_CARD_HEIGHT,
-//     position: 'relative',
-//     overflow: 'hidden',
-//     borderRadius: 8,
-//     margin: 8,
-//   }}
-// >
-//   {/* Background overlay */}
-//   <div
-//     style={{
-//       position: 'absolute',
-//       top: 40,
-//       left: 0,
-//       width: '100%',
-//       height: '100%',
-//         backgroundImage: `url(${bgUrl})`,
-//       backgroundSize: 'cover',
-//       backgroundPosition: 'center',
-//       opacity: 0.3, // background image opacity
-//       zIndex: 0,
-//     }}
-//   />
+const IDCard = ({ participant }) => {
+  const bgUrl = participant.left_logo_url|| "cam-norte.png";
+  const shape1 = participant.participant_type === 'Participant' ? 'Shape 1 (4).svg' : 'Shape 1 (5).svg';
+  const shape2 = participant.participant_type === 'Participant' ? 'Shape 2 (3).svg' : 'Shape 2 (4).svg';
+  return (
+   <div
+  style={{
+    width: ID_CARD_WIDTH,
+    height: ID_CARD_HEIGHT,
+    position: 'relative',
+    overflow: 'hidden',
+    borderRadius: 8,
+    margin: 8,
+  }}
+>
+  {/* Background overlay */}
+  <div
+    style={{
+      position: 'absolute',
+      top: 40,
+      left: 0,
+      width: '100%',
+      height: '100%',
+        backgroundImage: `url(${bgUrl})`,
+      backgroundSize: 'cover',
+      backgroundPosition: 'center',
+      opacity: 0.3, // background image opacity
+      zIndex: 0,
+    }}
+  />
 
 //   {/* All your other content stays above */}
 //   <img
@@ -58,21 +58,21 @@
 //     alt=""
 //   />
 
-//   <img
-//     style={{
-//       position: 'absolute',
-//       top: 200,
-//       left: (ID_CARD_WIDTH - 260) / 2,
-//       width: 120,
-//       height: 120,
-//       border: '1px solid #302ea6',
-//       background: '#fff',
-//       objectFit: 'cover',
-//       zIndex: 1,
-//     }}
-//     src={participant.participant_image_url || 'user.png'}
-//     alt=""
-//   />
+  <img
+    style={{
+      position: 'absolute',
+      top: 200,
+      left: (ID_CARD_WIDTH - 260) / 2,
+      width: 120,
+      height: 120,
+      border: '1px solid #302ea6',
+      background: '#fff',
+      objectFit: 'cover',
+      zIndex: 1,
+    }}
+    src={participant.participant_image_url || 'https://imgs.search.brave.com/RlLMklCzxIKu5cSUG_cy9tOqGWIRRRrrmSkrrS2cljM/rs:fit:500:0:0:0/g:ce/aHR0cHM6Ly9tYXJr/ZXRwbGFjZS5jYW52/YS5jb20vZ0pseTAv/TUFHRGtNZ0pseTAv/MS90bC9jYW52YS11/c2VyLXByb2ZpbGUt/aWNvbi12ZWN0b3Iu/LWF2YXRhci1vci1w/ZXJzb24taWNvbi4t/cHJvZmlsZS1waWN0/dXJlLC1wb3J0cmFp/dC1zeW1ib2wuLU1B/R0RrTWdKbHkwLnBu/Zw'}
+    alt=""
+  />
 
 //   {/* QR Code section */}
 //   <div
@@ -111,17 +111,17 @@
 //     </div>
 //   </div>
 
-//   {/* Logos */}
-//   <img
-//     style={{ position: 'absolute', top: 18, left: 18, width: 65, zIndex: 1 }}
-//     src={participant.left_logo_url || "LeftLogo.png"}
-//     alt="Left Logo"
-//   />
-//   <img
-//     style={{ position: 'absolute', top: 18, right: 18, width: 65, zIndex: 1 }}
-//     src={participant.right_logo_url || "RightLogo.png"}
-//     alt="Right Logo"
-//   />
+  {/* Logos */}
+  <img
+    style={{ position: 'absolute', top: 18, left: 18, width: 80, zIndex: 1 }}
+    src={participant.left_logo_url || "LeftLogo.png"}
+    alt="Left Logo"
+  />
+  <img
+    style={{ position: 'absolute', top: 18, right: 18, width: 80, zIndex: 1 }}
+    src={participant.right_logo_url || "RightLogo.png"}
+    alt="Right Logo"
+  />
 
 //   {/* Participant name */}
 //   <div
@@ -159,40 +159,39 @@
 //     }}
 //   >
     
-//     <div style={{ position: 'absolute', top: 20, width: '100%', textAlign: 'center' }}>
-//       <div
-//         style={{
-//           position: 'absolute',
-//           top: 15,
-      
-//             width: '100%',
-//           fontFamily: "'Kameron', serif",
-//           color: '#000',
-//           fontSize: 12,
-//         }}
-//       >
-//       {participant.title?.toUpperCase()}
-//       </div>
-//       <div
-//         style={{
-//           position: 'absolute',
-//           top: 45,
-//           color: '#000',
-//           fontFamily: "'Kameron', serif",
-//           textAlign: 'center',
-//           width: '100%',
-//           fontWeight: 'bold',
-//           fontSize: 16,
-       
-//         }}
-//       >
-//    <strong>{participant.subtitle}</strong><br />
-// <span>July 1, 2025</span>
+    <div style={{ position: 'absolute', top: 20, width: '100%', textAlign: 'center' }}>
+      <div
+        style={{
+          position: 'absolute',
+          top: 15,
+          left: '50%',
+          transform: 'translateX(-50%)',
+          fontFamily: "'Kameron', serif",
+          fontWeight: 'bold',
+          color: '#000',
+          fontSize: 18,
+        }}
+      >
+      {participant.title?.toUpperCase()}
+      </div>
+      <div
+        style={{
+          position: 'absolute',
+          top: 50,
+          color: '#000',
+          fontFamily: "'Kameron', serif",
+          textAlign: 'center',
+          width: '100%',
 
-//       </div>
-//     </div>
-//   </div>
-// </div>
+          fontSize: 14,
+          fontStyle: 'italic',
+        }}
+      >
+      {participant.subtitle}
+      </div>
+    </div>
+  </div>
+</div>
 
 //   );
 // };
