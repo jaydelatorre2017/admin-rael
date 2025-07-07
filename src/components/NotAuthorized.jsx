@@ -1,74 +1,30 @@
 import React from "react";
-import { useTheme } from "@mui/material/styles";
-import Box from "@mui/material/Box";
-import Typography from "@mui/material/Typography";
-import Paper from "@mui/material/Paper";
+import { useNavigate } from "react-router-dom";
 
-export default function NotAuthorized() {
-  const theme = useTheme();
-  const isDark = theme.palette.mode === "dark";
+const NotAuthorized = () => {
+  const navigate = useNavigate();
 
   return (
-    <Box
-      sx={{
-        minHeight: "100vh",
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-        bgcolor: isDark
-          ? "linear-gradient(120deg, #23272f 0%, #1a202c 100%)"
-          : "linear-gradient(120deg, #f1f5f9 0%, #e0e7ef 100%)",
-        fontFamily: "Inter, Segoe UI, Arial, sans-serif",
-      }}
-    >
-      <Paper
-        elevation={8}
-        sx={{
-          background: isDark ? "#23272f" : "#fff",
-          p: 4,
-          borderRadius: "1.2rem",
-          textAlign: "center",
-          maxWidth: 340,
+    <div className="min-h-screen flex flex-col items-center justify-center bg-white text-center px-4">
+      <div
+        className="w-full max-w-md h-72 bg-no-repeat bg-center bg-contain mb-8"
+        style={{
+          backgroundImage: 'url("https://i.imgur.com/qIufhof.png")',
         }}
+      />
+      <h1 className="text-[80px] sm:text-[100px] font-bold text-red-500 mb-2">403</h1>
+      <p className="text-2xl font-semibold text-gray-800 mb-2">Access Denied</p>
+      <p className="text-base text-gray-500 mb-6">
+        You do not have permission to view this page.
+      </p>
+      <button
+        onClick={() => navigate("/contact")}
+        className="px-6 py-3 bg-red-500 hover:bg-red-600 text-white font-bold rounded-lg transition"
       >
-        <Box
-          sx={{
-            background: isDark ? "#ef4444" : "#f87171",
-            borderRadius: "50%",
-            width: 54,
-            height: 54,
-            mx: "auto",
-            mb: 2,
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-          }}
-        >
-          <svg width="28" height="28" fill="none" viewBox="0 0 24 24">
-            <circle cx="12" cy="12" r="10" fill={isDark ? "#23272f" : "#fff"} />
-            <path
-              d="M9 9l6 6M15 9l-6 6"
-              stroke={isDark ? "#ef4444" : "#f87171"}
-              strokeWidth="2"
-              strokeLinecap="round"
-            />
-          </svg>
-        </Box>
-        <Typography
-          variant="h5"
-          fontWeight={700}
-          color={isDark ? "#ef4444" : "#f87171"}
-          mb={1}
-        >
-          Not Authorized
-        </Typography>
-        <Typography
-          color={isDark ? "#cbd5e1" : "#64748b"}
-          fontSize="1rem"
-        >
-          You do not have permission to view this page.
-        </Typography>
-      </Paper>
-    </Box>
+        Contact the Admin
+      </button>
+    </div>
   );
-}
+};
+
+export default NotAuthorized;

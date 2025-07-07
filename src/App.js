@@ -5,8 +5,10 @@ import { BrowserRouter as Router } from "react-router-dom";
 import SignInPage from "./components/Login";
 import DashboardLayoutSlots from "./components/main";
 import QRScannerDashboard from "./components/scanner";
-import ParticipantIDGenerator from "./components/PariticipantId";
-import ParticipantCertificateGenerator from "./components/certificategenerator";
+import DigitalIdPerParticipants from "./components/DigitalID/PariticipantId";
+import ParticipantCertificateofAppearance from "./components/CertificateofAppearance";
+import NotAuthorized from "./components/NotAuthorized";
+import AllDigitalID from "./components/DigitalID/AlldigitalID";
 import { isTokenValid } from "./utils/tokenUtils"; // import utility
 
 function AnimatedRoutes() {
@@ -17,15 +19,21 @@ function AnimatedRoutes() {
   return (
     <Routes location={location} key={location.pathname}>
       <Route path="/" element={<PageWrapper><SignInPage /></PageWrapper>} />
+      <Route 
+        path="/NotAuthorize" 
+        element={ <NotAuthorized /> }/>
        <Route 
         path="/id" 
-        element={ <ParticipantIDGenerator /> }/>
+        element={ <DigitalIdPerParticipants /> }/>
+        <Route 
+        path="/all-digital-id" 
+        element={ <AllDigitalID /> }/>
       <Route 
-        path="/scanner" 
-        element={ <QRScannerDashboard /> }/>
+        path="/Scanner" 
+        element={ isValid ?<QRScannerDashboard /> : <Navigate to ="/NotAuthorize"/>}/>
              <Route 
         path="/certificate-of-appearance" 
-        element={ <ParticipantCertificateGenerator /> }/>
+        element={ <ParticipantCertificateofAppearance /> }/>
       <Route 
         path="/dashboard/*" 
         element={isValid ? <DashboardLayoutSlots /> : <Navigate to="/" />} 

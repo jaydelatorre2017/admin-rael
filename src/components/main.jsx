@@ -18,7 +18,6 @@ import AdminPanelSettingsIcon from '@mui/icons-material/AdminPanelSettings';
 
 import GroupIcon from '@mui/icons-material/Group';
 import BadgeIcon from '@mui/icons-material/Badge';
-import AssignmentIndIcon from '@mui/icons-material/AssignmentInd';
 import ListAltIcon from '@mui/icons-material/ListAlt';
 import AddBoxIcon from '@mui/icons-material/AddBox';
 import CloudCircleIcon from '@mui/icons-material/CloudCircle';
@@ -34,16 +33,12 @@ import { isTokenValid, decodeToken } from "../utils/tokenUtils";
 
 // Pages
 import Home from './Home';
-import RequestPage from './Registered_Participants';
-import GeneratePage from './Id_Generator';
-import ResidentList from './EventList';
-import AddResident from './AddEvents';
-import RequestLogs from './Requested_Certificate_logs';
-import AdminControl from './admin';
+import RegisteredPage from './Registered_Participants';
+import ResidentList from './Events/EventList';
+import AddResident from './Events/AddEvents';
+import AttendanceLogs from './Attendance_logs';
+import AdminControl from './AdminPanel';
 import NotAuthorized from './NotAuthorized';
-
-// Others
-import { header } from 'framer-motion/client';
 
 
 const NAVIGATION = [
@@ -53,7 +48,7 @@ const NAVIGATION = [
   { kind: 'divider' },
 
   { kind: 'header', title: 'Participants', icon: <GroupIcon /> },
-  { segment: 'request', title: 'Registered Participants', icon: <BadgeIcon /> },
+  { segment: 'participant', title: 'Registered Participants', icon: <BadgeIcon /> },
 
   { kind: 'divider', header: 'Events & Id Management', icon: <EventIcon /> },
 
@@ -94,7 +89,7 @@ function DemoPageContent({ pathname }) {
   const isValid = token && isTokenValid(token);
   const decodeTokens = token && decodeToken(token);
   const role = decodeTokens.role;
-  const bulk_ops = decodeTokens.can_bulk_operations;
+  
 
 
   if (!isValid) {
@@ -114,14 +109,12 @@ function DemoPageContent({ pathname }) {
   switch (pathname) {
     case '/':
       return <Home />;
-    case '/request':
-      return <RequestPage />;
-    case '/generate':
-      return <GeneratePage />;
+    case '/participant':
+      return <RegisteredPage />;
     case '/events/list':
       return <ResidentList />;
     case '/logs':
-      return <RequestLogs />;
+      return <AttendanceLogs />;
     case '/events/editor':
       return <AddResident />;
     default:
@@ -200,7 +193,7 @@ function CustomAppTitle() {
   return (
     <Stack direction="row" alignItems="center" spacing={2}>
       <CloudCircleIcon fontSize="large" color="primary" />
-      <Typography variant="h6">Event Management Admin</Typography>
+      <Typography variant="h6">Rael Management </Typography>
     </Stack>
   );
 }
@@ -210,7 +203,7 @@ function SidebarFooter({ mini }) {
   return (
     <Typography variant="caption" sx={{ m: 1 }}>
       {/* Conditional text based on sidebar state */}
-      {mini ? '© Wise One' : `©  Made with love by Wise One`}
+      {mini ? '© Mabini OJT CSS' : `©  Made with love by Mabini OJT CSS 2025`}
     </Typography>
   );
 }
