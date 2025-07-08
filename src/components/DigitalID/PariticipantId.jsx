@@ -1,68 +1,53 @@
-
-
-
-import  { useEffect, useRef, useState } from 'react';
-import {
-    Box,
-    Button,
-    Container,
-    Typography,
-    useMediaQuery,
-} from '@mui/material';
+import { useEffect, useRef, useState } from 'react';
 import html2canvas from 'html2canvas';
 import { PDFDocument } from 'pdf-lib';
 import { useLocation } from 'react-router-dom';
 import IDCard from './IDCard';
-import useSwalTheme from '../../utils/useSwalTheme';
 import { API_URL, headername, keypoint } from '../../utils/config';
 import NotFoundPage from '../NotFoundPage';
+import { Skeleton } from '@mui/material';
 
 const useQuery = () => new URLSearchParams(useLocation().search);
 
 const ParticipantIDGeneratorSingle = () => {
     const [participant, setParticipant] = useState(null);
     const [notFound, setNotFound] = useState(false);
+    const [loading, setLoading] = useState(false);
     const cardRef = useRef();
-    const SwalInstance = useSwalTheme();
-    const isMobile = useMediaQuery('(max-width:600px)');
     const query = useQuery();
     const participantId = query.get('participant_id');
 
- useEffect(() => {
-  if (!participantId) {
-    setNotFound(true);
-    return;
-  }
-
-  const fetchParticipant = async () => {
-    SwalInstance.fire({
-      title: 'Loading...',
-      allowOutsideClick: false,
-      didOpen: () => SwalInstance.showLoading(),
-    });
-
-    try {
-      const res = await fetch(
-        `${API_URL}/api/registration/get_participant?participant_id=${participantId}`, {
-          headers: { [headername]: keypoint }
+    useEffect(() => {
+        if (!participantId) {
+            setNotFound(true);
+            return;
         }
-      );
-      const data = await res.json();
 
-      if (!res.ok || !data || !data.id) {
-        setNotFound(true);
-      } else {
-        setParticipant(data);
-      }
-      SwalInstance.close();
-    } catch (err) {
-      setNotFound(true);
-      SwalInstance.close();
-    }
-  };
+        const fetchParticipant = async () => {
+            setLoading(true);
+            try {
+                const res = await fetch(
+                    `${API_URL}/api/registration/get_participant?participant_id=${participantId}`,
+                    {
+                        headers: { [headername]: keypoint },
+                    }
+                );
+                const data = await res.json();
 
-  fetchParticipant();
-}, [participantId, SwalInstance]); // ✅ include SwalInstance
+                if (!res.ok || !data || !data.id) {
+                    setNotFound(true);
+                } else {
+                    setParticipant(data);
+                }
+            } catch (err) {
+                setNotFound(true);
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        fetchParticipant();
+    }, [participantId]);
 
     const saveAsPDF = async () => {
         if (!cardRef.current || !participant) return;
@@ -107,81 +92,63 @@ const ParticipantIDGeneratorSingle = () => {
         URL.revokeObjectURL(url);
     };
 
-    if (notFound) {
-        return <NotFoundPage />;
-    }
+    if (notFound) return <NotFoundPage />;
 
     return (
-        <Container
-            maxWidth="sm"
-            sx={{
-                py: { xs: 3, sm: 5 },
-                display: 'flex',
-                flexDirection: 'column',
-                alignItems: 'center',      // ⬅️ horizontal centering
-            }}
+        <div
+            className='flex flex-col md:flex-row w-full items-center p-4 md:h-screen md:justify-center pt-10 md:pt-0 bg-cover bg-center'
+            style={{ backgroundImage: "url('/bg.jpg')" }}
         >
-            <Box textAlign="center" mb={{ xs: 3, sm: 5 }}>
-                <Typography
-                    variant={isMobile ? 'h5' : 'h4'}
-                    fontWeight="bold"
-                    color="primary"
-                >
-                    Digital ID Download
-                </Typography>
-                <Typography
-                    variant={isMobile ? 'body2' : 'body1'}
-                    color="text.secondary"
-                >
-                    Regional Assembly of Leaders
-                </Typography>
-            </Box>
+            <div className='flex flex-col md:flex-row w-full max-w-6xl rounded-3xl backdrop-blur-xl bg-white/10 border border-white/30 shadow-2xl p-6'>
+                {/* Illustration */}
+                <div className='hidden md:flex md:w-1/2 flex-col items-center justify-center h-[700px] relative'>
+                    <img src='id3d.png' alt='ID Illustration' className='h-full object-contain z-0 ' />
+                    <div className='absolute bottom-6 bg-black/50 backdrop-blur-md px-6 py-4 rounded-2xl border border-white/20 shadow-md text-center z-10'>
+                        <h2 className='text-2xl font-bold text-white tracking-wide drop-shadow'>Welcome!</h2>
+                          <h4 className='text-base font-bold text-white/80 mt-1 drop-shadow-sm'> Participant No.1</h4>
+                        <p className='text-base text-white/80 mt-1 drop-shadow-sm'> Please Download your Digital ID</p>
+                    </div>
+                </div>
 
-            {participant && (
-                <Box                       /* keeps contents centred */
-                    display="flex"
-                    flexDirection="column"
-                    alignItems="center"
-                    gap={3}
-                    sx={{
-                        px: { xs: 1, sm: 3 },
-                        // ⬇️ let this box size to its content instead of 100 %
-                        width: 'auto',
-                    }}
-                >
-                    <Box
-                        ref={cardRef}
-                        sx={{
-                            maxWidth: 350,
-                            width: '100%',        // card still scales up to 350 px max
-                            height: 'auto',
-                            boxShadow: 3,
-                        }}
-                    >
-                        <IDCard participant={participant} />
-                    </Box>
+                {/* ID Generator */}
+                <div className='w-full md:w-1/2 flex flex-col mt-8 items-center'>
+                    <div className='block md:hidden max-w-5xl mx-auto p-4 text-center text-white'>
+                        <h2 className='text-2xl font-bold text-white tracking-wide drop-shadow'>Welcome! </h2>
+                            <h4 className='text-base font-bold text-white/80 mt-1 drop-shadow-sm'> Participant No.1</h4>
+                       <p className='text-base text-white/80 mt-1 drop-shadow-sm'> Please Download your Digital ID</p>
+                    </div>
 
-                    {/* alignSelf ensures the button is centred even if you change layouts */}
-                    <Button
-                        variant="contained"
-                        color="primary"
-                        size={isMobile ? 'medium' : 'large'}
-                        onClick={saveAsPDF}
-                        sx={{
-                            alignSelf: 'center',
-                            textTransform: 'none',
-                            px: 4,
-                            py: 1.5,
-                            borderRadius: 2,
-                            fontWeight: 600,
-                        }}
-                    >
-                        Download as PDF
-                    </Button>
-                </Box>
-            )}
-        </Container>
+                    {/* ID Card Preview */}
+                    <div className='w-full overflow-x-auto flex justify-center mt-4'>
+                        <div ref={cardRef}>
+                            {loading ? (
+                                <Skeleton
+                                    variant='rectangular'
+                                    width={350}
+                                    height={520}
+                                    animation='wave'
+                                    sx={{ borderRadius: 4 }}
+                                />
+                            ) : participant ? (
+                                <IDCard participant={participant} />
+                            ) : null}
+                        </div>
+                    </div>
 
+                    {/* Download Button */}
+                    {participant && !loading && (
+                        <div className='flex justify-center mt-6'>
+                            <button
+                                onClick={saveAsPDF}
+                                className='px-6 py-2 rounded-lg bg-green-600 text-white hover:bg-green-700 transition shadow-md'
+                            >
+                                Download Now
+                            </button>
+                        </div>
+                    )}
+                </div>
+            </div>
+        </div>
     );
 };
 

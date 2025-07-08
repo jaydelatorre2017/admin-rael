@@ -3,6 +3,20 @@ import { Box, Typography } from '@mui/material';
 import { QRCodeSVG } from 'qrcode.react';
 
 const IDCard = React.forwardRef(({ participant }, ref) => {
+   const defaultParticipant = {
+    id: 'RAEL-2025-0000',
+    name: 'MARIA CRISTINA ',
+    position: 'SCHOOL HEAD',
+    full_name: 'Maria Cristina Dela Cruz',
+    division_name: 'CAMARINES NORTE',
+    school: 'DAET ELEMENTARY SCHOOL',
+    office: '',
+    phone_number: '09171234567',
+    participant_image_url: '/default.png',
+};
+
+    const data = participant || defaultParticipant;
+
     return (
         <Box
             ref={ref}
@@ -103,16 +117,14 @@ const IDCard = React.forwardRef(({ participant }, ref) => {
                         border: '4px solid #ffffff',
                         boxShadow: '0 4px 10px rgba(0,0,0,0.4)',
                         bgcolor: '#ffffff',
-                        objectPosition: 'center top'
+                        objectPosition: 'center top',
                     }}
                 >
                     <img
                         crossOrigin="anonymous"
-                        src={
-                            participant?.participant_image_url
-                        }
+                        src={data.participant_image_url}
                         alt="Profile"
-                        style={{ width: '100%', height: '100%', objectFit: 'cover', }}
+                        style={{ width: '100%', height: '100%', objectFit: 'cover' }}
                     />
                 </Box>
             </Box>
@@ -120,15 +132,14 @@ const IDCard = React.forwardRef(({ participant }, ref) => {
             {/* Participant Name and Role */}
             <Box sx={{ textAlign: 'center', mt: 2, px: 2 }}>
                 <Typography fontSize={13} color="#d0d0d0">
-                    {participant?.position || 'Employee Position'}
+                    {data.position}
                 </Typography>
                 <Typography fontSize={24} fontWeight={600}>
-                    {participant?.name?.toUpperCase() || 'EMPLOYEE NAME'}
+                    {data.name.toUpperCase()}
                 </Typography>
             </Box>
 
             {/* QR and Info Section */}
-
             <Box
                 sx={{
                     position: 'absolute',
@@ -142,22 +153,16 @@ const IDCard = React.forwardRef(({ participant }, ref) => {
             >
                 {/* Participant Details on Left */}
                 <Box sx={{ flex: 1, pr: 2 }}>
-                    {participant?.full_name && (
-                        <Typography fontSize={10} fontWeight={500}>
-                            Full Name: {participant.full_name.toUpperCase()}
-                        </Typography>
+                    <Typography fontSize={10} fontWeight={500}>
+                        Full Name: {data.full_name.toUpperCase()}
+                    </Typography>
+                    <Typography fontSize={10}>Division: {data.division_name}</Typography>
+                    {data.school ? (
+                        <Typography fontSize={10}>School: {data.school}</Typography>
+                    ) : (
+                        <Typography fontSize={10}>Office: {data.office}</Typography>
                     )}
-                    {participant?.division_name && (
-                        <Typography fontSize={10}>Division: {participant.division_name}</Typography>
-                    )}
-                    {participant?.school ? (
-                        <Typography fontSize={10}>School: {participant.school}</Typography>
-                    ) : participant?.office ? (
-                        <Typography fontSize={10}>Office: {participant.office}</Typography>
-                    ) : null}
-                    {participant?.phone_number && (
-                        <Typography fontSize={10}>Phone: {participant.phone_number}</Typography>
-                    )}
+                    <Typography fontSize={10}>Phone: {data.phone_number}</Typography>
                 </Box>
 
                 {/* QR Code on Right */}
@@ -175,7 +180,7 @@ const IDCard = React.forwardRef(({ participant }, ref) => {
                     }}
                 >
                     <QRCodeSVG
-                        value={participant?.id ? String(participant.id) : 'NO-ID'}
+                        value={String(data.id)}
                         size={70}
                         level="H"
                         bgColor="transparent"
@@ -183,7 +188,6 @@ const IDCard = React.forwardRef(({ participant }, ref) => {
                     />
                 </Box>
             </Box>
-
         </Box>
     );
 });
