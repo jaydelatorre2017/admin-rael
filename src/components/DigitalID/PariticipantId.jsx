@@ -111,7 +111,7 @@ const ParticipantIDGeneratorSingle = () => {
                 </div>
 
                 {/* ID Generator */}
-                <div className='w-full md:w-1/2 flex flex-col mt-8 items-center'>
+                <div className='w-full md:w-1/2 flex flex-col mt-8 items-center md:mt-12'>
                     <div className='block md:hidden max-w-5xl mx-auto p-4 text-center text-white'>
                         <h2 className='text-2xl font-bold text-white tracking-wide drop-shadow'>Welcome! </h2>
                             <h4 className='text-base font-bold text-white/80 mt-1 drop-shadow-sm'> Participant No.1</h4>
