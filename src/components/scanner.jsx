@@ -56,9 +56,10 @@ const QRScannerDashboard = () => {
       try {
         const res = await fetch(`${API_URL}/api/attendance/create_attendance`, {
           method: "POST",
-          headers: { "Content-Type": "application/json" ,
-            headers: { [headername]: keypoint }
-          },
+           headers: {
+    "Content-Type": "application/json",
+    [headername]: keypoint
+  },
           body: JSON.stringify({ participant_id: scanned, event_id: activeEventId }),
         });
 
