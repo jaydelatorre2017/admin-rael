@@ -1,32 +1,4 @@
-Conversation opened. 2 messages. 1 message unread.
 
-Skip to content
-Using Department of Education Mail with screen readers
-
-code update
-Inbox
-
-jhon brayn rafer
-Attachments
-4:18 PM (15 minutes ago)
-to me
-
-
- 6 Attachments
-  •  Scanned by Gmail
-
-jhon brayn rafer
-Attachments
-4:29 PM (4 minutes ago)
-to me
-
-
-
-On Fri, Aug 8, 2025 at 4:18 PM jhon brayn rafer <jhonbraynrafer@gmail.com> wrote:
-
-
- One attachment
-  •  Scanned by Gmail
 import { useEffect, useState } from "react";
 import {
   Typography, TextField, CircularProgress,Paper, Button, MenuItem, useTheme, Box,IconButton, Tooltip 
@@ -448,5 +420,4 @@ const handleUpdateCertificateAccess = async (access) => {
 };
 
 export default RegistrationTable;
-admin.txt
-Displaying admin.txt.
+
